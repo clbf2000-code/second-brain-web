@@ -11,7 +11,9 @@ const PRIMARY_MODEL = process.env.SECOND_BRAIN_LLM_MODEL || 'Combo_brain';
 const FALLBACK_MODELS = String(process.env.SECOND_BRAIN_LLM_FALLBACK_MODELS || 'vllm/brain,claude-haiku,claude-sonnet').split(',').map(s => s.trim()).filter(Boolean);
 const MODEL_CHAIN = [PRIMARY_MODEL, ...FALLBACK_MODELS].filter(Boolean);
 const LLM_API_KEY = process.env.SECOND_BRAIN_LLM_API_KEY || process.env.OPENAI_API_KEY || '';
-const UPSTREAM_TIMEOUT_MS = 20000;
+// Upstream model responses occasionally exceed 20 seconds. Keep this below the
+// synchronous Netlify Function ceiling while allowing a realistic LLM response.
+const UPSTREAM_TIMEOUT_MS = 45000;
 
 function makeStore() {
   return getStore(STORE, { siteID: SITE_ID, token: TOKEN });
@@ -193,6 +195,6 @@ exports.handler = async (event) => {
 
     return { statusCode: 200, headers: { 'content-type': 'application/json' }, body: JSON.stringify({ answer, model: usedModel, endpoint: API_ENDPOINT, matched: workingSet.length, model_chain: MODEL_CHAIN }) };
   } catch (e) {
-    return { statusCode: 500, headers: { 'content-type': 'application/json' }, body: JSON.stringify({ error: e.name === 'AbortError' ? 'Model chưa trả lời trong 20 giây.' : String(e && e.message || e), model: usedModel, endpoint: API_ENDPOINT }) };
+    return { statusCode: 500, headers: { 'content-type': 'application/json' }, body: JSON.stringify({ error: e.name === 'AbortError' ? 'Model chưa trả lời trong 45 giây.' : String(e && e.message || e), model: usedModel, endpoint: API_ENDPOINT }) };
   }
 };
