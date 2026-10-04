@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Second Brain — Đăng nhập</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b1220;color:#edf4ff}.card{width:min(420px,calc(100vw - 32px));padding:28px;border:1px solid #263655;border-radius:16px;background:#101a2e;box-shadow:0 20px 60px #0007}h1{font-size:24px;margin:0 0 8px}p{color:#aebed9;line-height:1.5}label{display:block;margin:20px 0 7px}input,button{font:inherit;width:100%;border-radius:9px;padding:12px}input{border:1px solid #3a4d74;background:#0a1120;color:#fff}button{border:0;background:#2864d7;color:#fff;font-weight:700;cursor:pointer;margin-top:14px}button:disabled{opacity:.6;cursor:wait}.msg{min-height:24px;color:#ffbb99;margin:12px 0 0;font-size:14px}.ok{color:#9be7b2}.note{margin-top:20px;font-size:13px;color:#8394b4}
+</style>
+</head>
+<body><main class="card"><h1>Second Brain</h1><p>Đăng nhập để vào không gian ghi chú.</p><form id="login"><label for="password">Mật khẩu</label><input id="password" type="password" autocomplete="current-password" autofocus required><div class="row" style="margin-top:14px; gap:10px;"><button id="submit" type="submit">Safe Mode</button><button id="fullMode" type="button" class="secondary">Bản đầy đủ</button></div><div id="msg" class="msg" aria-live="polite"></div></form><p class="note">Phiên bản an toàn: không tải đồ thị, ghi chú hay AI trước khi đăng nhập.</p></main>
+<script>
+const form=document.getElementById('login'), pass=document.getElementById('password'), btn=document.getElementById('submit'), fullBtn=document.getElementById('fullMode'), msg=document.getElementById('msg');
+let mode='safe';
+fullBtn.addEventListener('click', () => { mode='full'; form.requestSubmit(); });
+form.addEventListener('submit',async e=>{e.preventDefault();const password=pass.value.trim();if(!password){msg.textContent='Nhập mật khẩu.';return}btn.disabled=true; fullBtn.disabled=true; msg.textContent='Đang đăng nhập…';try{const r=await fetch('/.netlify/functions/auth-login',{method:'POST',credentials:'include',headers:{'content-type':'application/json'},body:JSON.stringify({password})});if(!r.ok)throw new Error('Mật khẩu không đúng hoặc máy chủ chưa sẵn sàng.');msg.className='msg ok';msg.textContent='Đăng nhập thành công.';pass.value='';const target = mode==='safe' ? '/app.html?v=safe-app-20261002' : '/index.html?v=full';setTimeout(()=>location.href=target,300)}catch(err){msg.className='msg';msg.textContent=err.message||'Không thể kết nối.'}finally{btn.disabled=false; fullBtn.disabled=false; mode='safe';}});
+</script></body></html>

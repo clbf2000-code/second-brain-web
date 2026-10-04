@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tri thức Hồng Lĩnh</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#edf4ff;font:16px system-ui}
+main{max-width:1250px;margin:auto;padding:20px}
+a{color:#9dc5ff}button,input,textarea{font:inherit}
+button{cursor:pointer;padding:9px;border:1px solid #48658c;border-radius:8px;background:#183256;color:white}
+input,textarea{width:100%;padding:10px;background:#0b1220;color:white;border:1px solid #48658c;border-radius:8px}
+textarea{min-height:110px}label{display:block;margin:12px 0}
+.grid{display:grid;grid-template-columns:300px 1fr;gap:18px}
+.card{background:#101a2e;border:1px solid #30425f;border-radius:12px;padding:16px}
+#list{max-height:75vh;overflow:auto}#list button{display:block;text-align:left;width:100%;margin:8px 0}
+.small{color:#afbfda;font-size:14px}.tag{display:inline-block;margin:3px;padding:3px 7px;background:#263d60;border-radius:6px}
+#relations label{display:flex;gap:8px;align-items:start}
+#relations input{width:auto}#map{width:100%;height:auto;min-height:260px}
+#graphBox{overflow:auto}svg text{fill:#edf4ff;font-size:13px}
+svg line{stroke:#83baff;stroke-width:2}svg .topic{stroke:#526079;stroke-dasharray:5 5}
+svg g{cursor:pointer}svg circle{fill:#1b4775;stroke:#9ecaff}
+svg g:focus circle{stroke:#fff;stroke-width:4}
+@media(max-width:800px){.grid{grid-template-columns:1fr}#list{max-height:35vh}}
+</style></head><body><main>
+<p><a href="/app.html">← Second Brain</a></p>
+<h1>Tri thức Hồng Lĩnh</h1>
+<p class="small">Tag mặc định được đề xuất từ tên file. Liên kết cùng tag biểu thị cùng nhóm;
+liên kết tài liệu do anh chọn biểu thị quan hệ đã lưu. Chưa xác minh toàn văn.</p>
+<p id="status" role="status">Đang tải…</p>
+<div class="grid"><aside class="card">
+<input id="search" placeholder="Tìm tên hoặc tag" aria-label="Tìm tài liệu">
+<div id="list"></div></aside>
+<section class="card"><div id="editor">Chọn tài liệu.</div></section></div>
+<h2>Sơ đồ quan hệ của tài liệu đang chọn</h2>
+<p class="small">Đường liền: liên kết đã lưu, xem được từ cả hai tài liệu.
+Đường đứt: cùng tag. Sơ đồ hiện tài liệu đang chọn và các tài liệu liên quan.</p>
+<div class="card" id="graphBox"><svg id="map" viewBox="0 0 1000 700"
+aria-label="Sơ đồ quan hệ tài liệu"></svg><div id="legend"></div></div>
+</main><script src="/knowledge.js"></script></body></html>
