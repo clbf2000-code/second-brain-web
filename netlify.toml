@@ -1,3 +1,17 @@
 [build]
   publish = "public"
   functions = "functions"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@netlify/blobs"]
+  included_files = ["functions/_project-data/*.json"]
+
+[functions.brain-query]
+  timeout = 90
+
+[functions.upload-attachment]
+  timeout = 90
+
+[functions.list-notes]
+  timeout = 90
