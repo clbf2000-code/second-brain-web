@@ -26,6 +26,13 @@ function normalizeNote(x, i) {
     created_at: x.created_at || now,
     updated_at: now,
     linked_notes: Array.isArray(x.linked_notes) ? x.linked_notes : [],
+    attachments: Array.isArray(x.attachments) ? x.attachments.map(a => ({
+      name: String(a.name || 'file'),
+      type: String(a.type || 'application/octet-stream'),
+      size: Number(a.size) || 0,
+      blob_key: String(a.blob_key || ''),
+      url: String(a.url || '')
+    })).filter(a => a.blob_key && a.url) : [],
     source: x.source || 'web-ui'
   };
 }
